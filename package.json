@@ -1,0 +1,30 @@
+{
+  "name": "heroku-deploy",
+  "version": "1.0.0",
+  "topic": "deploy",
+  "description": "Deploy WAR and JAR files to Heroku",
+  "main": "index.js",
+  "repository": "https://github.com/heroku/heroku-deploy-jar",
+  "scripts": {
+    "test": "mocha",
+    "depcheck": "depcheck || true"
+  },
+  "keywords": [
+    "heroku",
+    "cli",
+    "heroku-plugin"
+  ],
+  "author": "Joe Kutner <joe@heroku.com>",
+  "license": "ISC",
+  "dependencies": {
+    "heroku-cli-util": "^5.4.6"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "depcheck": "^0.4.7",
+    "dir-compare": "^0.0.2",
+    "fs-extra": "^0.23.1",
+    "mocha": "^2.2.4",
+    "wrench": "^1.5.8"
+  }
+}
