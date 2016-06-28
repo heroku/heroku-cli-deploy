@@ -24,7 +24,7 @@ module.exports = function(topic) {
 };
 
 function* jar(context, heroku) {
-  var file = getWarFilename(context)
+  var file = getJarFilename(context)
 
   validate(!file.endsWith('.war') && !file.endsWith('.jar'),
            'JAR file must have a .jar or .war extension')
@@ -35,15 +35,18 @@ function* jar(context, heroku) {
   validate(fs.statSync(file).size > helpers.maxFileSize(),
            `JAR file must not exceed ${helpers.maxFileSize()} MB`)
 
-  let status = yield deployWar(warFile, context)
+  let status = yield deployJar(file, context)
 }
 
 function deployJar(file, context) {
+  let opts = context.flags.options ?
+      context.flags.options.replace('$','\$') : ''
   console.log('Uploading ' + path.basename(file))
   return helpers.deploy(context, [
     `-Dheroku.jarFile=${file}`,
-    `-Dheroku.jarOpts=${context.flags.options.gsub('$','\$')}`,
-    `-cp`, helpers.herokuDeployJar()
+    `-Dheroku.jarOpts="${opts}"`,
+    `-cp`, helpers.herokuDeployJar(),
+    'com.heroku.sdk.deploy.DeployJar'
   ]);
 }
 
