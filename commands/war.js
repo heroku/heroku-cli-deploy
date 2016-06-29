@@ -24,22 +24,22 @@ module.exports = function(topic) {
 };
 
 function* war(context, heroku) {
-  var warFile = getWarFilename(context)
+  yield withWarFilename(context, function(warFile) {
+    if (!warFile.endsWith('.war'))
+      return helpers.error('War file must have a .war extension');
 
-  validate(!warFile.endsWith('.war'),
-           'War file must have a .war extension')
+    if (!fs.existsSync(warFile))
+      return helpers.error('War file not found: ' + warFile);
 
-  validate(!fs.existsSync(warFile),
-           'War file not found: ' + warFile)
+    if (fs.statSync(warFile).size > helpers.maxFileSize())
+      return helpers.error(`War file must not exceed ${helpers.maxFileSize()} MB`);
 
-  validate(fs.statSync(warFile).size > helpers.maxFileSize(),
-           `War file must not exceed ${helpers.maxFileSize()} MB`)
-
-  let status = yield deployWar(warFile, context)
+    return deployWar(warFile, context)
+  });
 }
 
 function deployWar(file, context) {
-  console.log('Uploading ' + path.basename(file))
+  console.log(`Uploading ${ path.basename(file) }`)
   return helpers.deploy(context, [
     `-Dheroku.warFile=${file}`,
     '-jar',
@@ -47,20 +47,12 @@ function deployWar(file, context) {
   ]);
 }
 
-function getWarFilename(context) {
+function withWarFilename(context, callback) {
   if (context.args.length > 0) {
-    return path.join(process.cwd(), context.args[0])
+    return callback(path.join(process.cwd(), context.args[0]));
   } else if (context.flags.war) {
-    return path.join(process.cwd(), context.flags.war)
+    return callback(path.join(process.cwd(), context.flags.war));
   } else {
-    cli.error("No .war specified.\nSpecify which war to use with --war <war file name>");
-    process.exit(1)
-  }
-}
-
-function validate(condition, message) {
-  if (condition) {
-    cli.error(message)
-    process.exit(1)
+    return helpers.error("No .war specified.\nSpecify which war to use with --war <war file name>");
   }
 }
