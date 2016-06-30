@@ -23,7 +23,7 @@ module.exports = function(topic) {
 };
 
 function* war(context, heroku) {
-  return withWarFilename(context, function(warFile) {
+  return withWarFile(context, function(warFile) {
     if (!warFile.endsWith('.war'))
       return helpers.error('War file must have a .war extension');
 
@@ -46,7 +46,7 @@ function deployWar(file, context) {
   ]);
 }
 
-function withWarFilename(context, callback) {
+function withWarFile(context, callback) {
   if (context.args.length > 0) {
     return callback(path.join(process.cwd(), context.args[0]));
   } else if (context.flags.war) {
