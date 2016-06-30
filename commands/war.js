@@ -38,7 +38,7 @@ function* war(context, heroku) {
 }
 
 function deployWar(file, context) {
-  console.log(`Uploading ${ path.basename(file) }`)
+  cli.log(`Uploading ${ path.basename(file) }`)
   return helpers.deploy(context, [
     `-Dheroku.warFile=${file}`,
     '-jar',
