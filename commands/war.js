@@ -1,7 +1,6 @@
 'use strict';
 
 const cli = require('heroku-cli-util');
-const co = require('co');
 const path = require('path');
 const fs = require('fs');
 const helpers = require('../lib/helpers')
@@ -19,12 +18,12 @@ module.exports = function(topic) {
     description: 'Deploys a WAR file to Heroku.',
     needsApp: true,
     needsAuth: true,
-    run: cli.command(co.wrap(war))
+    run: cli.command(war)
   };
 };
 
 function* war(context, heroku) {
-  yield withWarFilename(context, function(warFile) {
+  return withWarFilename(context, function(warFile) {
     if (!warFile.endsWith('.war'))
       return helpers.error('War file must have a .war extension');
 

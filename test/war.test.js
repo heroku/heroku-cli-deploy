@@ -9,13 +9,16 @@ const Heroku = require('heroku-client');
 const apiKey = process.env.HEROKU_API_TOKEN;
 const heroku = new Heroku({ token: apiKey });
 const cli = require('heroku-cli-util');
+const expect = require('unexpected')
 const StdOutFixture = require('fixture-stdout')
 
 const commands = require('..').commands;
 const war = commands.find((c) => c.command === 'war');
 
 describe('war', function() {
-  //beforeEach(() => cli.mockConsole());
+  this.timeout(0);
+
+  beforeEach(() => cli.mockConsole());
 
   beforeEach(function() {
     return heroku.post('/apps').then((app) => {
@@ -39,14 +42,16 @@ describe('war', function() {
       let config = {
         debug: true,
         auth: {password: apiKey},
-        args: [ path.join('test', 'fixtures', 'myapp.war') ],
+        args: [ path.join('test', 'fixtures', 'sample-war.war') ],
         flags: {},
         app: this.app.name
       };
 
       return war.run(config)
          .then(() => fixture.release())
-         .then(() => expect(stdout, 'to equal', '1 2 3\n'))
+         .then(() => expect(stdout, 'to contain', 'Uploading sample-war.war'))
+         .then(() => expect(stdout, 'to contain', 'Installing OpenJDK 1.8'))
+         .then(() => expect(stdout, 'to contain', 'deployed to Heroku'))
     });
   });
 
