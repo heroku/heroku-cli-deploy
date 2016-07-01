@@ -54,8 +54,7 @@ describe('war', function() {
               done();
            })
            .catch(error => {
-             expect.fail(error.response.body)
-             done();
+             done(error);
            });
          });
     });
