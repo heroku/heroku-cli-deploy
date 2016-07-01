@@ -9,10 +9,12 @@ const Heroku = require('heroku-client');
 const apiKey = process.env.HEROKU_API_TOKEN;
 const heroku = new Heroku({ token: apiKey });
 const cli = require('heroku-cli-util');
-const expect = require('unexpected')
+const expect = require('unexpected');
 
 const commands = require('..').commands;
 const war = commands.find((c) => c.command === 'war');
+
+cli.raiseErrors = true
 
 describe('war', function() {
   this.timeout(0);
@@ -33,7 +35,7 @@ describe('war', function() {
   });
 
   describe('happy path', function() {
-    it('deploys successfully', function() {
+    it('deploys successfully', function(done) {
       let config = {
         debug: true,
         auth: {password: apiKey},
@@ -42,11 +44,20 @@ describe('war', function() {
         app: this.app.name
       };
 
-      return war.run(config)
+      war.run(config)
          .then(() => expect(cli.stdout, 'to contain', 'Uploading sample-war.war'))
          .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.8'))
          .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
+         .then(() => {
+           cli.got(`https://${this.app.name}.herokuapp.com`).then(response => {
+              expect(response.body, 'to contain', 'asdfasdfas');
+              done();
+           })
+           .catch(error => {
+             expect.fail(error.response.body)
+             done();
+           });
+         });
     });
   });
-
 });
