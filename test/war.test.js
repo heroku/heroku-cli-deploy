@@ -13,6 +13,7 @@ const expect = require('unexpected');
 
 const commands = require('..').commands;
 const war = commands.find((c) => c.command === 'war');
+const Promise = require('bluebird')
 
 cli.raiseErrors = true
 
@@ -44,20 +45,15 @@ describe('war', function() {
         app: this.app.name
       };
 
-      war.run(config)
+      let warPromise = war.run(config)
          .then(() => expect(cli.stdout, 'to contain', 'Uploading sample-war.war'))
          .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.8'))
          .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
-         .then(() => {
-           cli.got(`https://${this.app.name}.herokuapp.com`).then(response => {
-              expect(response.body, 'to contain', 'asdfasdfas');
-              done();
-           })
-           .catch(error => {
-             expect.fail(error.response.body)
-             done();
-           });
-         });
+
+      let gotPromise = cli.got(`https://${this.app.name}.herokuapp.com`)
+         .then(response => expect(response.body, 'to contain', 'asdfasdfas'))
+
+      return Promise.reduce([warPromise, gotPromise], function() {}, 0)
     });
   });
 });
