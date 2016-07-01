@@ -13,9 +13,6 @@ const expect = require('unexpected');
 
 const commands = require('..').commands;
 const war = commands.find((c) => c.command === 'war');
-const Promise = require('bluebird')
-
-cli.raiseErrors = true
 
 describe('war', function() {
   this.timeout(0);
@@ -36,7 +33,7 @@ describe('war', function() {
   });
 
   describe('happy path', function() {
-    it('deploys successfully', function(done) {
+    it('deploys successfully', function() {
       let config = {
         debug: true,
         auth: {password: apiKey},
@@ -45,15 +42,31 @@ describe('war', function() {
         app: this.app.name
       };
 
-      let warPromise = war.run(config)
+      return war.run(config)
          .then(() => expect(cli.stdout, 'to contain', 'Uploading sample-war.war'))
          .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.8'))
          .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
+         .then(() => cli.got(`https://${this.app.name}.herokuapp.com`)
+            .then(response => expect(response.body, 'to contain', 'Hello World!')))
+    });
+  });
 
-      let gotPromise = cli.got(`https://${this.app.name}.herokuapp.com`)
-         .then(response => expect(response.body, 'to contain', 'asdfasdfas'))
+  describe('when a war file and app without access is specified', function() {
+    it('an error should be raised', function() {
+      let config = {
+        debug: true,
+        auth: {password: apiKey},
+        args: [ path.join('test', 'fixtures', 'sample-war.war') ],
+        flags: {},
+        app: "an-app-i-do-not-own"
+      };
 
-      return Promise.reduce([warPromise, gotPromise], function() {}, 0)
+      return war.run(config)
+         .then(() => expect(cli.stdout, 'to contain', 'Uploading sample-war.war'))
+         .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.8'))
+         .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
+         .then(() => cli.got(`https://${this.app.name}.herokuapp.com`)
+            .then(response => expect(response.body, 'to contain', 'Hello World!')))
     });
   });
 });

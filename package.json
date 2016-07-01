@@ -21,7 +21,6 @@
   },
   "devDependencies": {
     "fixture-stdout": "0.2.1",
-    "bluebird": "3.4.1",
     "chai": "^3.2.0",
     "depcheck": "^0.4.7",
     "dir-compare": "^0.0.2",
