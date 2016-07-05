@@ -50,23 +50,4 @@ describe('war', function() {
             .then(response => expect(response.body, 'to contain', 'Hello World!')))
     });
   });
-
-  describe('when a war file and app without access is specified', function() {
-    it('an error should be raised', function() {
-      let config = {
-        debug: true,
-        auth: {password: apiKey},
-        args: [ path.join('test', 'fixtures', 'sample-war.war') ],
-        flags: {},
-        app: "an-app-i-do-not-own"
-      };
-
-      return war.run(config)
-         .then(() => expect(cli.stdout, 'to contain', 'Uploading sample-war.war'))
-         .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.8'))
-         .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
-         .then(() => cli.got(`https://${this.app.name}.herokuapp.com`)
-            .then(response => expect(response.body, 'to contain', 'Hello World!')))
-    });
-  });
 });
