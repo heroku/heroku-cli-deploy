@@ -17,7 +17,10 @@ const war = commands.find((c) => c.command === 'war');
 describe('war', function() {
   this.timeout(0);
 
-  beforeEach(() => cli.mockConsole());
+  beforeEach(() => {
+    cli.mockConsole();
+    cli.exit.mock();
+  });
 
   beforeEach(function() {
     return heroku.post('/apps').then((app) => {
@@ -32,7 +35,7 @@ describe('war', function() {
     });
   });
 
-  describe('happy path', function() {
+  describe('when a war file and valid app is specified', function() {
     it('deploys successfully', function() {
       let config = {
         debug: true,
@@ -48,6 +51,19 @@ describe('war', function() {
          .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
          .then(() => cli.got(`https://${this.app.name}.herokuapp.com`)
             .then(response => expect(response.body, 'to contain', 'Hello World!')))
+    });
+
+    it('validates the extension', function() {
+      let config = {
+        debug: true,
+        auth: {password: apiKey},
+        args: [ path.join('test', 'fixtures', 'invalid.txt') ],
+        flags: {},
+        app: this.app.name
+      };
+
+      return war.run(config)
+         .then(() => expect(cli.stdout, 'to contain', 'Uploading sample-war.war'));
     });
   });
 });

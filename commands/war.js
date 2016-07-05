@@ -25,13 +25,13 @@ module.exports = function(topic) {
 function* war(context, heroku) {
   return withWarFile(context, function(warFile) {
     if (!warFile.endsWith('.war'))
-      return helpers.error('War file must have a .war extension');
+      return cli.exit(1, 'War file must have a .war extension');
 
     if (!fs.existsSync(warFile))
-      return helpers.error('War file not found: ' + warFile);
+      return cli.exit(1, 'War file not found: ' + warFile);
 
     if (fs.statSync(warFile).size > helpers.maxFileSize())
-      return helpers.error(`War file must not exceed ${helpers.maxFileSize()} MB`);
+      return cli.exit(1, `War file must not exceed ${helpers.maxFileSize()} MB`);
 
     return deployWar(warFile, context)
   });
@@ -52,6 +52,6 @@ function withWarFile(context, callback) {
   } else if (context.flags.war) {
     return callback(path.join(process.cwd(), context.flags.war));
   } else {
-    return helpers.error("No .war specified.\nSpecify which war to use with --war <war file name>");
+    return cli.exit(1, "No .war specified.\nSpecify which war to use with --war <war file name>");
   }
 }
