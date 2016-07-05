@@ -23,6 +23,7 @@ module.exports = function(topic) {
 };
 
 function* war(context, heroku) {
+  cli.exit(1, "arguments are wrong somehow")
   return withWarFile(context, function(warFile) {
     if (!warFile.endsWith('.war'))
       return cli.exit(1, 'War file must have a .war extension');
