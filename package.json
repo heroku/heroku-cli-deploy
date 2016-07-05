@@ -17,7 +17,7 @@
   "author": "Joe Kutner <joe@heroku.com>",
   "license": "ISC",
   "dependencies": {
-    "heroku-cli-util": "^5.4.6"
+    "heroku-cli-util": "^6.0.14"
   },
   "devDependencies": {
     "fixture-stdout": "0.2.1",

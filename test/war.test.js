@@ -8,7 +8,6 @@ const os = require('os');
 const Heroku = require('heroku-client');
 const apiKey = process.env.HEROKU_API_TOKEN;
 const heroku = new Heroku({ token: apiKey });
-const cli = require('heroku-cli-util');
 const expect = require('unexpected');
 
 const commands = require('..').commands;
@@ -53,6 +52,23 @@ describe('war', function() {
             .then(response => expect(response.body, 'to contain', 'Hello World!')))
     });
 
+    it('deploys successfully with the --war option', function() {
+      let config = {
+        debug: true,
+        auth: {password: apiKey},
+        args: [],
+        flags: { "war" : path.join('test', 'fixtures', 'sample-war.war') },
+        app: this.app.name
+      };
+
+      return war.run(config)
+         .then(() => expect(cli.stdout, 'to contain', 'Uploading sample-war.war'))
+         .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.8'))
+         .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
+         .then(() => cli.got(`https://${this.app.name}.herokuapp.com`)
+            .then(response => expect(response.body, 'to contain', 'Hello World!')))
+    });
+
     it('validates the extension', function() {
       let config = {
         debug: true,
@@ -62,8 +78,39 @@ describe('war', function() {
         app: this.app.name
       };
 
-      return war.run(config)
-         .then(() => expect(cli.stdout, 'to contain', 'Uploading sample-war.war'));
+      expect(war.run(config), "to be rejected with", /War file must have a \.war extension/);
+    });
+
+    it("validates the file's existence", function() {
+      let config = {
+        debug: true,
+        auth: {password: apiKey},
+        args: [ path.join('test', 'fixtures', 'not-a-file.war') ],
+        flags: {},
+        app: this.app.name
+      };
+
+      expect(war.run(config), "to be rejected with", /War file not found: not-a-file\.war/);
+    });
+  });
+
+  describe('when a war file is huge', function() {
+
+    beforeEach(() => {
+      cli.mockConsole();
+      cli.exit.mock();
+    });
+
+    it('validates the extension', function() {
+      let config = {
+        debug: true,
+        auth: {password: apiKey},
+        args: [ path.join('test', 'fixtures', 'huge-file.war') ],
+        flags: {},
+        app: this.app.name
+      };
+
+      expect(war.run(config), "to be rejected with", /War file must not exceed 300 MB/);
     });
   });
 });
