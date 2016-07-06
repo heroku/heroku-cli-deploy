@@ -1,6 +1,7 @@
 'use strict';
 
 const cli = require('heroku-cli-util');
+const co = require('co');
 const path = require('path');
 const fs = require('fs');
 const helpers = require('../lib/helpers')
@@ -18,20 +19,20 @@ module.exports = function(topic) {
     description: 'Deploys an executable JAR file to Heroku.',
     needsApp: true,
     needsAuth: true,
-    run: cli.command(jar)
+    run: cli.command(co.wrap(jar))
   };
 };
 
 function* jar(context, heroku) {
   return withJarFile(context, function(file) {
     if (!(file.endsWith('.war') || file.endsWith('.jar')))
-      helpers.error('JAR file must have a .jar or .war extension');
+      return cli.exit(1, 'JAR file must have a .jar or .war extension');
 
     if (!fs.existsSync(file))
-      helpers.error(`JAR file not found: ${ file }`);
+      return cli.exit(1, `JAR file not found: ${ file }`);
 
     if (fs.statSync(file).size > helpers.maxFileSize())
-      helpers.error(`JAR file must not exceed ${helpers.maxFileSize()} MB`);
+      return cli.exit(1, `JAR file must not exceed ${helpers.maxFileSizeMegabytes()} MB`);
 
     return deployJar(file, context);
   });
@@ -40,7 +41,7 @@ function* jar(context, heroku) {
 function deployJar(file, context) {
   let opts = context.flags.options ?
               context.flags.options.replace('$','\$') : ''
-  console.log('Uploading ' + path.basename(file))
+  cli.log('Uploading ' + path.basename(file))
   return helpers.deploy(context, [
     `-Dheroku.jarFile=${file}`,
     `-Dheroku.jarOpts="${opts}"`,
@@ -51,10 +52,10 @@ function deployJar(file, context) {
 
 function withJarFile(context, callback) {
   if (context.args.length > 0) {
-    return callback(path.join(process.cwd(), context.args[0]));
-  } else if (context.flags.war) {
-    return callback(path.join(process.cwd(), context.flags.jar));
+    return callback(context.args[0]);
+  } else if (context.flags.jar) {
+    return callback(context.flags.jar);
   } else {
-    return helpers.error("No .jar specified.\nSpecify which war to use with --jar <jar file name>");
+    return cli.exit(1, "No .jar specified.\nSpecify which war to use with --jar <jar file name>");
   }
 }
