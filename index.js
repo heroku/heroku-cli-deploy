@@ -5,8 +5,6 @@ exports.topics = [
 ]
 
 exports.commands = [
-  //require('./commands/deploy'),
-  require('./commands/deploy/index')('deploy'),
   require('./commands/deploy/war')('deploy'),
   require('./commands/deploy/jar')('deploy'),
 ]
