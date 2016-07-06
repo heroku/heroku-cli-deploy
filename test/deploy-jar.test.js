@@ -12,8 +12,8 @@ const heroku = new Heroku({ token: apiKey });
 const expect = require('unexpected');
 const tmp = require('tmp');
 
-const commands = require('..').commands;
-const jar = commands.find((c) => c.command === 'jar');
+const commands = require('../index').commands
+const jar = commands.find((c) => c.topic === 'deploy' && c.command === 'jar')
 
 describe('jar', function() {
   this.timeout(0);

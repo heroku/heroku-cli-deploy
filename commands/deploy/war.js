@@ -4,7 +4,7 @@ const cli = require('heroku-cli-util');
 const co = require('co');
 const path = require('path');
 const fs = require('fs');
-const helpers = require('../lib/helpers')
+const helpers = require('../../lib/helpers')
 
 module.exports = function(topic) {
   return {

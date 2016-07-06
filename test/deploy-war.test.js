@@ -12,8 +12,8 @@ const heroku = new Heroku({ token: apiKey });
 const expect = require('unexpected');
 const tmp = require('tmp');
 
-const commands = require('..').commands;
-const war = commands.find((c) => c.command === 'war');
+const commands = require('../index').commands
+const war = commands.find((c) => c.topic === 'deploy' && c.command === 'war')
 
 describe('war', function() {
   this.timeout(0);

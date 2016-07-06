@@ -1,7 +1,6 @@
 {
   "name": "heroku-deploy",
   "version": "1.0.0",
-  "topic": "deploy",
   "description": "Deploy WAR and JAR files to Heroku",
   "main": "index.js",
   "repository": "https://github.com/heroku/heroku-deploy-jar",
