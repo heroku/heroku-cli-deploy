@@ -32,7 +32,7 @@ function* war(context, heroku) {
       return cli.exit(1, 'War file not found: ' + warFile);
 
     if (fs.statSync(warFile).size > helpers.maxFileSize())
-      return cli.exit(1, `War file must not exceed ${helpers.maxFileSize()} MB`);
+      return cli.exit(1, `War file must not exceed ${helpers.maxFileSizeMegabytes()} MB`);
 
     return deployWar(warFile, context)
   });
@@ -49,9 +49,9 @@ function deployWar(file, context) {
 
 function withWarFile(context, callback) {
   if (context.args.length > 0) {
-    return callback(path.join(process.cwd(), context.args[0]));
+    return callback(context.args[0]);
   } else if (context.flags.war) {
-    return callback(path.join(process.cwd(), context.flags.war));
+    return callback(context.flags.war);
   } else {
     return cli.exit(1, "No .war specified.\nSpecify which war to use with --war <war file name>");
   }

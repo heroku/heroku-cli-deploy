@@ -4,14 +4,26 @@ const assert = require('chai').assert;
 const compareSync = require('dir-compare').compareSync;
 const path = require('path');
 const fs = require('fs-extra');
+const child = require('child_process');
 const os = require('os');
 const Heroku = require('heroku-client');
 const apiKey = process.env.HEROKU_API_TOKEN;
 const heroku = new Heroku({ token: apiKey });
 const expect = require('unexpected');
+const tmp = require('tmp');
 
 const commands = require('..').commands;
 const war = commands.find((c) => c.command === 'war');
+
+function makeFakeWar(megabytes, callback) {
+  temp.open('myprefix', function(err, info) {
+    if (!err) {
+      child.exec(`dd if=/dev/zero of=${filePath} count=${megabytes} bs=1048576`, [], { stdio: 'inherit' }, function(err, stdout) {
+        callback(fd);
+      });
+    }
+  });
+}
 
 describe('war', function() {
   this.timeout(0);
@@ -52,18 +64,21 @@ describe('war', function() {
             .then(response => expect(response.body, 'to contain', 'Hello World!')))
     });
 
-    it('deploys successfully with the --war option', function() {
+    it('deploys successfully with options', function() {
       let config = {
         debug: true,
         auth: {password: apiKey},
         args: [],
-        flags: { "war" : path.join('test', 'fixtures', 'sample-war.war') },
+        flags: {
+          war: path.join('test', 'fixtures', 'sample-war.war'),
+          jdk: "1.7"
+        },
         app: this.app.name
       };
 
       return war.run(config)
          .then(() => expect(cli.stdout, 'to contain', 'Uploading sample-war.war'))
-         .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.8'))
+         .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.7'))
          .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
          .then(() => cli.got(`https://${this.app.name}.herokuapp.com`)
             .then(response => expect(response.body, 'to contain', 'Hello World!')))
@@ -90,27 +105,53 @@ describe('war', function() {
         app: this.app.name
       };
 
-      expect(war.run(config), "to be rejected with", /War file not found: not-a-file\.war/);
+      expect(war.run(config), "to be rejected with", /War file not found: /);
     });
   });
 
-  describe('when a war file is huge', function() {
+  describe('when a war file is too big', function() {
+    var fakeWar = tmp.fileSync({postfix: '.war'});
+    var fileSize = 301;
 
     beforeEach(() => {
-      cli.mockConsole();
-      cli.exit.mock();
+      child.execSync(`dd if=/dev/zero of=${fakeWar.name} count=${fileSize} bs=1048576`, [], { stdio: 'pipe' });
     });
 
-    it('validates the extension', function() {
+    afterEach(() => fakeWar.removeCallback());
+
+    it('validates the file size', function() {
       let config = {
         debug: true,
         auth: {password: apiKey},
-        args: [ path.join('test', 'fixtures', 'huge-file.war') ],
+        args: [ `${fakeWar.name}` ],
         flags: {},
         app: this.app.name
       };
 
       expect(war.run(config), "to be rejected with", /War file must not exceed 300 MB/);
+    });
+  });
+
+  describe('when a war file is big', function() {
+    var fakeWar = tmp.fileSync({postfix: '.war'});
+    var fileSize = 199;
+
+    beforeEach(() => {
+      child.execSync(`dd if=/dev/zero of=${fakeWar.name} count=${fileSize} bs=1048576`, [], { stdio: 'pipe' });
+    });
+
+    it('validates the file size', function() {
+      let config = {
+        debug: true,
+        auth: {password: apiKey},
+        args: [ `${fakeWar.name}` ],
+        flags: {},
+        app: this.app.name
+      };
+
+      return war.run(config)
+         .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.8'))
+         .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
     });
   });
 });
