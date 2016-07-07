@@ -60,7 +60,9 @@ describe('war', function() {
         args: [],
         flags: {
           war: path.join('test', 'fixtures', 'sample-war.war'),
-          jdk: "1.7"
+          jdk: "1.7",
+          includes: path.join('test', 'fixtures', 'invalid.txt'),
+          "webapp-runner": "7.0.57.2"
         },
         app: this.app.name
       };
@@ -69,6 +71,10 @@ describe('war', function() {
          .then(() => expect(cli.stdout, 'to contain', 'Uploading sample-war.war'))
          .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.7'))
          .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
+         .then(() => {
+            var stdout = child.execSync(`heroku run cat test/fixtures/invalid.txt -a ${ this.app.name }`)
+            expect(stdout.toString(), 'to contain', 'not a war or jar file')
+         })
          .then(() => cli.got(`https://${this.app.name}.herokuapp.com`)
             .then(response => expect(response.body, 'to contain', 'Hello World!')))
     });
