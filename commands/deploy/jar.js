@@ -16,6 +16,7 @@ module.exports = function(topic) {
         { name: 'includes', char: 'i', hasValue: true },
         { name: 'options', char: 'o', hasValue: true}],
     variableArgs: true,
+    usage: 'deploy:jar JAR'
     description: 'Deploys an executable JAR file to Heroku.',
     needsApp: true,
     needsAuth: true,
