@@ -7,7 +7,6 @@ const fs = require('fs-extra');
 const child = require('child_process');
 const os = require('os');
 const Heroku = require('heroku-client');
-const apiKey = process.env.HEROKU_API_TOKEN;
 const heroku = new Heroku({ token: apiKey });
 const expect = require('unexpected');
 const tmp = require('tmp');
