@@ -45,7 +45,7 @@ function deployJar(file, context) {
   cli.log('Uploading ' + path.basename(file))
   return helpers.deploy(context, [
     `-Dheroku.jarFile=${file}`,
-    `-Dheroku.jarOpts="${opts}"`,
+    `-Dheroku.jarOpts=${opts}`,
     `-cp`, helpers.herokuDeployJar(),
     'com.heroku.sdk.deploy.DeployJar'
   ]);
