@@ -1,6 +1,6 @@
 {
   "name": "heroku-cli-deploy",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Deploy WAR and JAR files to Heroku",
   "main": "index.js",
   "repository": "https://github.com/heroku/heroku-cli-deploy",
