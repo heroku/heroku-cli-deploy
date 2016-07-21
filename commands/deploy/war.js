@@ -16,7 +16,7 @@ module.exports = function(topic) {
         { name: 'includes', char: 'i', hasValue: true },
         { name: 'webapp-runner', hasValue: true}],
     variableArgs: true,
-    usage: 'deploy:war WAR'
+    usage: 'deploy:war WAR',
     description: 'Deploys a WAR file to Heroku.',
     needsApp: true,
     needsAuth: true,
