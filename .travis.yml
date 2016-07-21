@@ -1,5 +1,8 @@
 language: node_js
 node_js:
-  - "6"
+- '6'
 before_install:
-  - sh etc/travis-setup.sh
+- sh etc/travis-setup.sh
+env:
+  global:
+    secure: kvO/vl9BX4B14Lxnp1rEUjmLQE498f0LjmkPdVmBtaQehSQBj3v4MWGnZUFfBcnM9cHduYrTzRbzF6z/iFGfuevIwb8zbaSF4fdYwK9nQB831z5KHo1W3DouUuxkxHd2OEwu1McVF0suGTFRRfOF9Q4MiulSZilrADkH0ByV7BnByy9ohmS7n4H7/U9CnW7wFs6IUp7jRn/fiWyacWnbppJXReIvODOOgKj6wkkB16dCEKbhZjVisAw1ct+0ioii8Li70MycZSH1S3DchybVSKsfcBB0hG0TV9CqdiSsvoVDmm/V3u4ezOPRtgsX2w3jcO11PtgIS9pu8a5pXDCS5AiiuuVlvV8ik1DigLQybe4OpJ8BA1Y8iboxzAaOYSUwDgx7VaQA50fYz5p5kvcOGRC8YQYR52wIghprypBsQgnmJM83qb0qTn04INm06RlCp1BHIeJQmD4eZm0HGYW3TcaEHFwHsVHP1Z++u9BEP9iy+/enFEBOYpm3ZvpJzwrmvwlwKPgomFbT1DcCo/C9mh//hOAhmB4Mn5JxWffY63383CmR/RAkXW/GI6rCAiUusuYOGMrwIDjtdciLi2MjznyfWCgzvmhz7PT4EATJnrUh7lfV8te2600PjVCODxc0OORFPicXI5f++quB1SSuxI6WYIgLUxjMoSipYHBC4yk=
