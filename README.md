@@ -33,7 +33,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.51-b03, mixed mode)
 
 Use the following command to install the <code>heroku-deploy</code> plugin:
 
-    $ heroku plugins:install <TODO>
+    $ heroku plugins:install heroku-cli-deploy
 
 ### 3. Create a Heroku application
 
