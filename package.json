@@ -1,9 +1,9 @@
 {
-  "name": "heroku-deploy",
+  "name": "heroku-cli-deploy",
   "version": "1.0.0",
   "description": "Deploy WAR and JAR files to Heroku",
   "main": "index.js",
-  "repository": "https://github.com/heroku/heroku-deploy-jar",
+  "repository": "https://github.com/heroku/heroku-cli-deploy",
   "scripts": {
     "test": "mocha",
     "depcheck": "depcheck || true"
