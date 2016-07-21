@@ -1,5 +1,3 @@
-WARNING: Beta software! Not ready to be used.
-
 # Heroku Deploy War/Jar [![Build Status](https://travis-ci.org/heroku/heroku-cli-deploy.svg?branch=master)](https://travis-ci.org/heroku/heroku-cli-deploy)
 
 This project is a [Heroku CLI](https://toolbelt.heroku.com/)
