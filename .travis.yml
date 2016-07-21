@@ -1,0 +1,5 @@
+language: node_js
+node_js:
+  - "6"
+before_install:
+  - sh etc/travis-setup.sh
