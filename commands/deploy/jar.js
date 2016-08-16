@@ -6,17 +6,17 @@ const path = require('path');
 const fs = require('fs');
 const helpers = require('../../lib/helpers')
 
-module.exports = function(topic) {
+module.exports = function(topic, command) {
   return {
     topic: topic,
-    command: 'jar',
+    command: command,
     flags: [
         { name: 'jar', char: 'j', hasValue: true },
         { name: 'jdk', hasValue: true },
         { name: 'includes', char: 'i', hasValue: true },
         { name: 'options', char: 'o', hasValue: true}],
     variableArgs: true,
-    usage: 'deploy:jar JAR',
+    usage: `${topic}:${command} JAR`,
     description: 'Deploys an executable JAR file to Heroku.',
     needsApp: true,
     needsAuth: true,

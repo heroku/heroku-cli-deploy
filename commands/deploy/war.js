@@ -6,17 +6,17 @@ const path = require('path');
 const fs = require('fs');
 const helpers = require('../../lib/helpers')
 
-module.exports = function(topic) {
+module.exports = function(topic, command) {
   return {
     topic: topic,
-    command: 'war',
+    command: command,
     flags: [
         { name: 'war', char: 'w', hasValue: true },
         { name: 'jdk', char: 'j', hasValue: true },
         { name: 'includes', char: 'i', hasValue: true },
         { name: 'webapp-runner', hasValue: true}],
     variableArgs: true,
-    usage: 'deploy:war WAR',
+    usage: `${topic}:${command} WAR`,
     description: 'Deploys a WAR file to Heroku.',
     needsApp: true,
     needsAuth: true,
