@@ -1,0 +1,54 @@
+'use strict';
+
+const cli = require('heroku-cli-util');
+const co = require('co');
+const path = require('path');
+const fs = require('fs');
+const helpers = require('../../lib/helpers')
+
+module.exports = function(topic, command) {
+  return {
+    topic: topic,
+    command: command,
+    flags: [
+        { name: 'war', char: 'w', hasValue: true },
+        { name: 'java-opts', char: 'j', hasValue: true}],
+    variableArgs: true,
+    usage: `${topic}:${command} WAR`,
+    description: 'Runs a WAR file.',
+    needsApp: true,
+    needsAuth: true,
+    run: cli.command(co.wrap(war))
+  };
+};
+
+function* war(context, heroku) {
+  return withWarFile(context, function(warFile) {
+    if (!warFile.endsWith('.war'))
+      return cli.exit(1, 'War file must have a .war extension');
+
+    if (!fs.existsSync(warFile))
+      return cli.exit(1, 'War file not found: ' + warFile);
+
+    if (fs.statSync(warFile).size > helpers.maxFileSize())
+      return cli.exit(1, `War file must not exceed ${helpers.maxFileSizeMegabytes()} MB`);
+
+    return runWar(warFile, context)
+  });
+}
+
+function runWar(file, context) {
+  cli.log(`Running ${ path.basename(file) }`)
+  return helpers.runWebappRunner(context, file,
+    context.flags.javaOpts ? [context.flags.javaOpts] : []);
+}
+
+function withWarFile(context, callback) {
+  if (context.args.length > 0) {
+    return callback(context.args[0]);
+  } else if (context.flags.war) {
+    return callback(context.flags.war);
+  } else {
+    return cli.exit(1, "No .war specified.\nSpecify which war to use with --war <war file name>");
+  }
+}

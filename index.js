@@ -9,4 +9,5 @@ exports.commands = [
   require('./commands/deploy/jar')('deploy', 'jar'),
   require('./commands/deploy/war')('war', 'deploy'),
   require('./commands/deploy/jar')('jar', 'deploy'),
+  require('./commands/war/run')('war', 'run')
 ]
