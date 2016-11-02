@@ -12,6 +12,7 @@ module.exports = function(topic, command) {
     command: command,
     flags: [
         { name: 'war', char: 'w', hasValue: true },
+        { name: 'webapp-runner', hasValue: true },
         { name: 'java-opts', char: 'j', hasValue: true}],
     variableArgs: true,
     usage: `${topic}:${command} WAR`,
@@ -40,7 +41,7 @@ function* war(context, heroku) {
 function runWar(file, context) {
   cli.log(`Running ${ path.basename(file) }`)
   return helpers.runWebappRunner(context, file,
-    context.flags.javaOpts ? [context.flags.javaOpts] : []);
+    context.flags.javaOpts ? [context.flags['java-opts']] : []);
 }
 
 function withWarFile(context, callback) {
