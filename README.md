@@ -50,7 +50,7 @@ The only requirement is that the WAR file is a standard Java web application and
 In order to deploy your WAR use the following command:
 
 ```sh-session
-$ heroku deploy:war <path_to_war_file> --app <app_name>
+$ heroku war:deploy <path_to_war_file> --app <app_name>
 Uploading my-app.war....
 ---> Packaging application...
     - app: my-app
@@ -115,3 +115,12 @@ web: java -cp my-uberjar.jar com.foo.MyMain opt1 opt2
 ```
 
 You can view your current Procfile command by running `heroku ps`.
+
+### Running locally
+
+You can run your WAR file locally the way it is run on Heroku by executing
+this command:
+
+```
+$ heroku war:run <path_to_war>
+```
