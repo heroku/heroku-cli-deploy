@@ -1,4 +1,4 @@
-# Heroku Deploy War/Jar [![Build Status](https://travis-ci.org/heroku/heroku-cli-deploy.svg?branch=master)](https://travis-ci.org/heroku/heroku-cli-deploy)
+# Heroku Deploy War/Jar [![Build Status](https://travis-ci.org/heroku/heroku-cli-deploy.svg?branch=master)](https://travis-ci.org/heroku/heroku-cli-deploy) [![CircleCI](https://circleci.com/gh/heroku/heroku-cli-deploy.svg?style=svg)](https://circleci.com/gh/heroku/heroku-cli-deploy)
 
 This project is a [Heroku CLI](https://toolbelt.heroku.com/)
 plugin for [deploying WAR files](https://devcenter.heroku.com/articles/war-deployment). It can also be used to deploy
