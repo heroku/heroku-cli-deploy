@@ -58,6 +58,6 @@ function withJarFile(context, callback) {
   } else if (context.flags.jar) {
     return callback(context.flags.jar);
   } else {
-    return cli.exit(1, "No .jar specified.\nSpecify which war to use with --jar <jar file name>");
+    return cli.exit(1, "No .jar specified.\nSpecify which jar to use with --jar <jar file name>");
   }
 }
