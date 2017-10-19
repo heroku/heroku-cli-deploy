@@ -15,6 +15,7 @@ module.exports = function(topic, command) {
         { name: 'jdk', hasValue: true },
         { name: 'includes', char: 'i', hasValue: true },
         { name: 'options', char: 'o', hasValue: true },
+        { name: 'buildpacks', hasValue: true },
         { name: 'build-version', hasValue: true }],
     variableArgs: true,
     usage: `${topic}:${command} JAR`,

@@ -61,7 +61,8 @@ describe('war', function() {
           war: path.join('test', 'fixtures', 'sample-war.war'),
           jdk: "1.7",
           includes: path.join('test', 'fixtures', 'invalid.txt'),
-          "webapp-runner": "7.0.57.2"
+          "webapp-runner": "7.0.57.2",
+          buildpacks: "heroku/metrics|heroku/jvm"
         },
         app: this.app.name
       };

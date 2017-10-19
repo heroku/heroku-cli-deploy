@@ -75,7 +75,8 @@ describe('jar', function() {
         flags: {
           jar: path.join('test', 'fixtures', 'sample-jar.jar'),
           jdk: "1.7",
-          includes: path.join('test', 'fixtures', 'invalid.txt')
+          includes: path.join('test', 'fixtures', 'invalid.txt'),
+          buildpacks: "heroku/metrics|heroku/jvm"
         },
         app: this.app.name
       };

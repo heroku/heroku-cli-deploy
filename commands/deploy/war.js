@@ -15,6 +15,7 @@ module.exports = function(topic, command) {
         { name: 'jdk', char: 'j', hasValue: true },
         { name: 'includes', char: 'i', hasValue: true },
         { name: 'webapp-runner', hasValue: true },
+        { name: 'buildpacks', hasValue: true },
         { name: 'build-version', hasValue: true }],
     variableArgs: true,
     usage: `${topic}:${command} WAR`,
