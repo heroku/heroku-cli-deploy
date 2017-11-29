@@ -6,3 +6,9 @@ node_js:
 before_install:
 - bash etc/ci-setup.sh
 script: yarn test
+matrix:
+  fast_finish: true
+  include:
+    - jdk: openjdk7
+    - jdk: oraclejdk8
+    - jdk: oraclejdk9

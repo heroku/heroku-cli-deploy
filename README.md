@@ -124,3 +124,26 @@ this command:
 ```
 $ heroku war:run <path_to_war>
 ```
+
+## Development
+
+To run the tests:
+
+```sh-session
+$ bash bin/test
+```
+
+To update the heroku-deploy-complete.jar:
+
+```sh-session
+$ bash update.sh <version>
+```
+
+For a list of versions see [Maven Central](http://repo1.maven.org/maven2/com/heroku/sdk/heroku-deploy-complete/).
+
+To publish this plugin:
+
+```sh-session
+$ npm version <version>
+$ npm publish
+```

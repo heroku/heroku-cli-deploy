@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -eu
+
+version="${1}"
+
+curl -o lib/heroku-deploy-complete.jar \
+  -L http://repo1.maven.org/maven2/com/heroku/sdk/heroku-deploy-complete/${version}/heroku-deploy-complete-${version}.jar
