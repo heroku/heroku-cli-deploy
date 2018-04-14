@@ -46,7 +46,7 @@ describe('jar', function() {
 
       return jar.run(config)
          .then(() => expect(cli.stdout, 'to contain', 'Uploading sample-jar.jar'))
-         .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.8'))
+         .then(() => expect(cli.stdout, 'to contain', 'Installing JDK 1.8'))
          .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
          .then(() => cli.got(`https://${this.app.name}.herokuapp.com`)
             .then(response => expect(response.body, 'to contain', 'Hello from Java!')))
@@ -63,7 +63,7 @@ describe('jar', function() {
 
       return jar.run(config)
          .then(() => expect(cli.stdout, 'to contain', 'Uploading sample-war.war'))
-         .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.8'))
+         .then(() => expect(cli.stdout, 'to contain', 'Installing JDK 1.8'))
          .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
     });
 
@@ -83,7 +83,7 @@ describe('jar', function() {
 
       return jar.run(config)
          .then(() => expect(cli.stdout, 'to contain', 'Uploading sample-jar.jar'))
-         .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.7'))
+         .then(() => expect(cli.stdout, 'to contain', 'Installing JDK 1.7'))
          .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
          .then(() => {
             var stdout = child.execSync(`heroku run cat test/fixtures/invalid.txt -a ${ this.app.name }`)
@@ -162,7 +162,7 @@ describe('jar', function() {
       };
 
       return jar.run(config)
-         .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.8'))
+         .then(() => expect(cli.stdout, 'to contain', 'Installing JDK 1.8'))
          .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
     });
   });

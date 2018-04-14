@@ -46,7 +46,7 @@ describe('war', function() {
 
       return war.run(config)
          .then(() => expect(cli.stdout, 'to contain', 'Uploading sample-war.war'))
-         .then(() => expect(cli.stdout, 'to contain', 'Installing OpenJDK 1.8'))
+         .then(() => expect(cli.stdout, 'to contain', 'Installing JDK 1.8'))
          .then(() => expect(cli.stdout, 'to contain', 'deployed to Heroku'))
          .then(() => cli.got(`https://${this.app.name}.herokuapp.com`)
             .then(response => expect(response.body, 'to contain', 'Hello World!')))
