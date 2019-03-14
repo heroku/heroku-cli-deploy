@@ -2,8 +2,7 @@ version: 2
 
 jobs:
   build:
-    docker:
-      - image: node:7.8.0
+    machine: true
     steps:
       - checkout
       - restore_cache:
