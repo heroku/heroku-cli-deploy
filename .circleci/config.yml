@@ -5,11 +5,19 @@ jobs:
       - image: node:7.8.0
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - dependencies-{{ checksum "package.json" }}
+            - dependencies-
       - run:
           name: Pre-test steps
           command: |
             bash etc/ci-setup.sh
             yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: dependencies-{{ checksum "package.json" }}
       - run:
           name: Test
           command: yarn test
