@@ -1,0 +1,27 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: node:7.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependencies-{{ checksum "package.json" }}
+            - dependencies-
+      - run:
+          name: Pre-test
+          command: |
+            bash etc/ci-setup.sh
+            yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Test
+          command: yarn test
+      - run:
+          name: Post-test
+          command: if [ -n "$HEROKU_API_KEY" ]; then heroku keys:remove $USER@`hostname | sed -e "s/\.localdomain//g"`; fi
