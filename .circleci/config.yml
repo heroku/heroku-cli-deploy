@@ -11,7 +11,7 @@ jobs:
             - dependencies-{{ checksum "package.json" }}
             - dependencies-
       - run:
-          name: Pre-test steps
+          name: Pre-test
           command: |
             bash etc/ci-setup.sh
             yarn install
