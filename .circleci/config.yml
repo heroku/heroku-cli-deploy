@@ -1,0 +1,18 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: node:7.8.0
+    steps:
+      - checkout
+      - run:
+          name: Pre-test steps
+          command: |
+            bash etc/ci-setup.sh
+            yarn install
+      - run:
+          name: Test
+          command: yarn test
+      - run:
+          name: Post-test
+          command: if [ -n "$HEROKU_API_KEY" ]; then heroku keys:remove $USER@`hostname | sed -e "s/\.localdomain//g"`; fi
