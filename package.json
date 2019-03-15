@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": "https://github.com/heroku/heroku-cli-deploy",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --reporter mocha-circleci-reporter",
     "depcheck": "depcheck || true"
   },
   "keywords": [
@@ -31,6 +31,7 @@
     "fs-extra": "^0.23.1",
     "heroku-client": "^3.0.0-beta2",
     "mocha": "^2.2.4",
+    "mocha-circleci-reporter": "^0.0.3",
     "wrench": "^1.5.8",
     "unexpected": "10.13.2",
     "tmp": "0.0.28"
