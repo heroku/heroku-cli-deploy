@@ -9,8 +9,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - dependencies-{{ checksum "package.json" }}
-            - dependencies-
+            - node_modules-{{ checksum "package.json" }}
+            - node_modules-
       - run:
           name: Pre-test
           command: |
@@ -19,7 +19,7 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: dependencies-{{ checksum "package.json" }}
+          key: node_modules-{{ checksum "package.json" }}
       - run:
           name: Test
           command: yarn test
