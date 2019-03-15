@@ -25,4 +25,4 @@ jobs:
           command: yarn test
       - run:
           name: Post-test
-          command: if [ -n "$HEROKU_API_KEY" ]; then heroku keys:remove $USER@`hostname | sed -e "s/\.localdomain//g"`; fi
+          command: if [ -n "$HEROKU_API_KEY" ]; then heroku keys:remove $(whoami)@$(hostname | sed -e "s/\.localdomain//g"); fi
