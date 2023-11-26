@@ -21,7 +21,7 @@
     "/lib"
   ],
   "dependencies": {
-    "heroku-cli-util": "^6.0.14"
+    "heroku-cli-util": "^6.2.9"
   },
   "devDependencies": {
     "fixture-stdout": "0.2.1",
