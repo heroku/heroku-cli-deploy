@@ -1,3 +1,21 @@
+## Archival Notice
+
+📁🗄📜**Repository Archived**
+
+This repository has been archived and will no longer be maintained by Heroku.
+
+**What this means:**
+- Pull requests and issue tracking have been disabled.
+- The project will not receive updates and no new features or security updates will be released.
+- The repository is now read-only.
+- The plugin will still be available to use but may be deprecated.
+
+**Why was it archived?**
+This project has been deprecated and replaced by [Heroku JVM Application Deployer](https://github.com/heroku/heroku-jvm-application-deployer). Active development has concluded.
+
+**What if I need to make a change?**
+If you wish to continue development, please consider forking the repository and maintaining your own version.
+
 # Heroku Deploy War/Jar [![Build Status](https://travis-ci.org/heroku/heroku-cli-deploy.svg?branch=master)](https://travis-ci.org/heroku/heroku-cli-deploy) [![CircleCI](https://circleci.com/gh/heroku/heroku-cli-deploy.svg?style=svg)](https://circleci.com/gh/heroku/heroku-cli-deploy)
 
 This project is a [Heroku CLI](https://toolbelt.heroku.com/)
